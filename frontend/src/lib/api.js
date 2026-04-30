@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001'
 
 class ApiError extends Error {
     constructor(message, status, details) {
@@ -6,6 +6,14 @@ class ApiError extends Error {
         this.name = 'ApiError'
         this.status = status
         this.details = details
+    }
+}
+
+function getAuthHeaders() {
+    const token = localStorage.getItem('token')
+    return {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': `Bearer ${token}` })
     }
 }
 
@@ -22,12 +30,37 @@ async function handleResponse(response) {
 }
 
 export const api = {
+    // Auth endpoints
+    async register(data) {
+        const response = await fetch(`${API_URL}/api/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        })
+        return handleResponse(response)
+    },
+
+    async login(data) {
+        const response = await fetch(`${API_URL}/api/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        })
+        return handleResponse(response)
+    },
+
+    async getProfile() {
+        const response = await fetch(`${API_URL}/api/auth/me`, {
+            headers: getAuthHeaders(),
+        })
+        return handleResponse(response)
+    },
+
+    // Expense endpoints
     async createExpense(data) {
         const response = await fetch(`${API_URL}/api/expenses`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: getAuthHeaders(),
             body: JSON.stringify(data),
         })
         return handleResponse(response)
@@ -46,7 +79,9 @@ export const api = {
         }
 
         const url = `${API_URL}/api/expenses${queryParams.toString() ? `?${queryParams}` : ''}`
-        const response = await fetch(url)
+        const response = await fetch(url, {
+            headers: getAuthHeaders(),
+        })
         return handleResponse(response)
     },
 
@@ -57,7 +92,17 @@ export const api = {
         }
 
         const url = `${API_URL}/api/expenses/total${queryParams.toString() ? `?${queryParams}` : ''}`
-        const response = await fetch(url)
+        const response = await fetch(url, {
+            headers: getAuthHeaders(),
+        })
+        return handleResponse(response)
+    },
+
+    // Analytics endpoint
+    async getAnalytics() {
+        const response = await fetch(`${API_URL}/api/analytics`, {
+            headers: getAuthHeaders(),
+        })
         return handleResponse(response)
     },
 }
