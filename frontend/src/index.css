@@ -87,7 +87,26 @@
   @apply bg-muted-foreground/50;
 }
 
-/* Smooth animations */
+/* Disable all transitions during theme change */
+.theme-transitioning * {
+  transition: none !important;
+}
+
+/* Re-enable transitions after theme change */
 * {
-  @apply transition-colors duration-200;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Prevent flash by setting explicit colors */
+html {
+  background-color: rgb(248 250 252);
+}
+
+html.dark {
+  background-color: rgb(2 6 23);
+}
+
+/* Ensure body follows html */
+body {
+  background-color: inherit;
 }

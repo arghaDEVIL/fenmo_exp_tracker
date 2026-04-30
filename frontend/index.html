@@ -1,14 +1,47 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Expense Tracker - Manage Your Finances</title>
-    <meta name="description" content="Track your expenses with ease. Beautiful, fast, and reliable expense tracking application." />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense Tracker - Manage Your Finances</title>
+  <meta name="description"
+    content="Track your expenses with ease. Beautiful, fast, and reliable expense tracking application." />
+
+  <!-- Prevent theme flash on page load -->
+  <script>
+    (function () {
+      try {
+        const theme = localStorage.getItem('theme') || 'light';
+        const root = document.documentElement;
+
+        // Remove any existing theme classes
+        root.classList.remove('light', 'dark');
+
+        // Add the correct theme class
+        root.classList.add(theme);
+
+        // Set background color immediately to prevent flash
+        if (theme === 'dark') {
+          root.style.backgroundColor = 'rgb(2, 6, 23)';
+          root.style.color = 'rgb(248, 250, 252)';
+        } else {
+          root.style.backgroundColor = 'rgb(248, 250, 252)';
+          root.style.color = 'rgb(15, 23, 42)';
+        }
+      } catch (e) {
+        // Fallback to light theme if there's any error
+        document.documentElement.classList.add('light');
+        document.documentElement.style.backgroundColor = 'rgb(248, 250, 252)';
+      }
+    })();
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
