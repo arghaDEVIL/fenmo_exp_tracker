@@ -25,7 +25,8 @@ function generateIdempotencyKey(data) {
         amount: data.amount,
         category: data.category,
         description: data.description || '',
-        date: data.date
+        date: data.date,
+        userId: data.userId
     });
     return crypto.createHash('sha256').update(content).digest('hex');
 }
@@ -37,9 +38,10 @@ function generateIdempotencyKey(data) {
 export async function createExpense(req, res, next) {
     try {
         const { amount, category, description, date } = req.body;
+        const userId = req.user.userId; // From JWT token
 
-        // Generate idempotency key
-        const idempotencyKey = generateIdempotencyKey(req.body);
+        // Generate idempotency key (include userId)
+        const idempotencyKey = generateIdempotencyKey({ ...req.body, userId });
 
         // Check if this request was already processed
         if (requestCache.has(idempotencyKey)) {
@@ -54,7 +56,8 @@ export async function createExpense(req, res, next) {
                 amount: parseFloat(amount),
                 category,
                 description: description || null,
-                date: new Date(date)
+                date: new Date(date),
+                userId
             }
         });
 
@@ -87,9 +90,13 @@ export async function createExpense(req, res, next) {
 export async function getExpenses(req, res, next) {
     try {
         const { category, sortBy = 'date', order = 'desc' } = req.query;
+        const userId = req.user.userId; // From JWT token
 
-        // Build where clause
-        const where = category ? { category } : {};
+        // Build where clause (always filter by userId)
+        const where = {
+            userId,
+            ...(category && { category })
+        };
 
         // Build orderBy clause
         const orderBy = {
@@ -125,9 +132,13 @@ export async function getExpenses(req, res, next) {
 export async function getTotalExpenses(req, res, next) {
     try {
         const { category } = req.query;
+        const userId = req.user.userId; // From JWT token
 
-        // Build where clause
-        const where = category ? { category } : {};
+        // Build where clause (always filter by userId)
+        const where = {
+            userId,
+            ...(category && { category })
+        };
 
         // Aggregate total
         const result = await prisma.expense.aggregate({

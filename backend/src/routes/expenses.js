@@ -5,9 +5,13 @@ import {
     getExpenses,
     getTotalExpenses
 } from '../controllers/expenseController.js';
+import { authenticateToken } from '../middleware/auth.js';
 import { validateRequest } from '../middleware/validateRequest.js';
 
 const router = express.Router();
+
+// Apply authentication to all expense routes
+router.use(authenticateToken);
 
 // Validation rules
 const expenseValidation = [

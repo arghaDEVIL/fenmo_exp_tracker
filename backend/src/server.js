@@ -2,7 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import authRoutes from './routes/auth.js';
 import expenseRoutes from './routes/expenses.js';
+import analyticsRoutes from './routes/analytics.js';
+import { authenticateToken } from './middleware/auth.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 dotenv.config();
@@ -35,7 +38,9 @@ app.get('/health', (req, res) => {
 });
 
 // API routes
+app.use('/api/auth', authRoutes);
 app.use('/api/expenses', expenseRoutes);
+app.use('/api/analytics', authenticateToken, analyticsRoutes);
 
 // 404 handler
 app.use((req, res) => {
