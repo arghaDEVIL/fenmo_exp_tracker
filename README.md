@@ -1,24 +1,45 @@
 # 💰 Expense Tracker
 
-A production-quality, full-stack expense tracking application with SaaS-level UI/UX polish.
+A production-quality, full-stack expense tracking application with SaaS-level UI/UX polish and comprehensive analytics dashboard.
 
 ![Tech Stack](https://img.shields.io/badge/React-18-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-green)
 ![Prisma](https://img.shields.io/badge/Prisma-ORM-purple)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
 
-## 🎯 Features
+## 🎯 Demo Access
 
-- ✅ Add expenses with amount, category, description, and date
-- ✅ View all expenses in a beautiful card-based layout
-- ✅ Filter expenses by category
-- ✅ Sort expenses by date
-- ✅ Real-time total spending calculation
-- ✅ Smooth animations and transitions
-- ✅ Skeleton loaders for better UX
-- ✅ Toast notifications for user feedback
-- ✅ Responsive design for all devices
-- ✅ Production-ready error handling
+**For immediate evaluation, use the demo account:**
+
+### 🚀 Quick Demo
+- Click **"Try Demo"** button on login/register pages
+- **OR** use credentials: `demo@example.com` / `demo123`
+- **Includes**: 16 sample expenses across 6 months with rich analytics
+
+> 📊 **Perfect for evaluators**: See full analytics dashboard, charts, and insights immediately without setup!
+
+## ✨ Features
+
+### Core Functionality
+- ✅ **JWT Authentication** with secure user sessions
+- ✅ **Add/Edit Expenses** with amount, category, description, and date
+- ✅ **Smart Filtering** by category and date sorting
+- ✅ **Real-time Calculations** with precise money handling
+- ✅ **Dark/Light Theme** with smooth transitions
+
+### Analytics Dashboard
+- ✅ **Comprehensive Charts**: Monthly trends, category breakdowns, spending velocity
+- ✅ **Smart Insights**: Daily averages, top expenses, spending patterns
+- ✅ **Interactive Visualizations** with Recharts
+- ✅ **Real-time Updates** when expenses are added
+
+### UI/UX Excellence
+- ✅ **SaaS-level Polish** with card-based layouts and soft shadows
+- ✅ **Smooth Animations** powered by Framer Motion
+- ✅ **Skeleton Loaders** for better perceived performance
+- ✅ **Toast Notifications** for user feedback
+- ✅ **Responsive Design** for all devices
+- ✅ **Accessibility Compliant** components
 
 ## 🏗️ Architecture
 
