@@ -56,22 +56,16 @@ export async function getAnalytics(req, res, next) {
             }
         });
 
-        // Recent expenses (last 7 days)
-        const sevenDaysAgo = new Date(now);
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-        const recentExpenses = await prisma.expense.findMany({
-            where: {
-                userId,
-                date: { gte: sevenDaysAgo }
-            },
-            orderBy: { date: 'desc' },
+        // Top expenses by amount (all time)
+        const topExpenses = await prisma.expense.findMany({
+            where: { userId },
+            orderBy: { amount: 'desc' },
             take: 10
         });
 
-        // Daily expenses for last 30 days (for chart)
-        const thirtyDaysAgo = new Date(now);
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        // Daily expenses for last 6 months (for charts)
+        const sixMonthsAgo = new Date(now);
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
         const dailyExpenses = await prisma.$queryRaw`
       SELECT 
@@ -80,7 +74,7 @@ export async function getAnalytics(req, res, next) {
         COUNT(*)::int as count
       FROM "Expense"
       WHERE "userId" = ${userId}
-        AND date >= ${thirtyDaysAgo}
+        AND date >= ${sixMonthsAgo}
       GROUP BY DATE(date)
       ORDER BY day ASC
     `;
@@ -114,7 +108,7 @@ export async function getAnalytics(req, res, next) {
                 total: parseFloat(day.total),
                 count: day.count
             })),
-            recentExpenses: recentExpenses.map(expense => ({
+            topExpenses: topExpenses.map(expense => ({
                 id: expense.id,
                 amount: parseFloat(expense.amount),
                 category: expense.category,
