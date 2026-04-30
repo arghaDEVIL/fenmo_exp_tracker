@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import { format } from 'date-fns'
-import { Receipt, Loader2, Inbox } from 'lucide-react'
+import { Receipt, Loader2, Inbox, Utensils, Car, Gamepad2, ShoppingBag, FileText, Heart, Package } from 'lucide-react'
 import { Card, CardContent } from './ui/card'
 import { api } from '@/lib/api'
 
@@ -16,28 +16,28 @@ const CATEGORY_COLORS = {
 }
 
 const CATEGORY_ICONS = {
-    Food: '🍔',
-    Transportation: '🚗',
-    Entertainment: '🎬',
-    Shopping: '🛍️',
-    Bills: '📄',
-    Healthcare: '⚕️',
-    Other: '📦'
+    Food: Utensils,
+    Transportation: Car,
+    Entertainment: Gamepad2,
+    Shopping: ShoppingBag,
+    Bills: FileText,
+    Healthcare: Heart,
+    Other: Package
 }
 
 function ExpenseSkeleton() {
     return (
         <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-                <Card key={i} className="animate-pulse">
+                <Card key={i} className="animate-pulse bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm border-slate-200 dark:border-slate-800">
                     <CardContent className="p-6">
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-slate-200 rounded-xl" />
+                            <div className="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-xl" />
                             <div className="flex-1 space-y-2">
-                                <div className="h-4 bg-slate-200 rounded w-1/4" />
-                                <div className="h-3 bg-slate-200 rounded w-1/2" />
+                                <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/4" />
+                                <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/2" />
                             </div>
-                            <div className="h-6 bg-slate-200 rounded w-20" />
+                            <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-20" />
                         </div>
                     </CardContent>
                 </Card>
@@ -53,11 +53,11 @@ function EmptyState() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-16"
         >
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-slate-100 rounded-full mb-4">
-                <Inbox className="w-10 h-10 text-slate-400" />
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full mb-4">
+                <Inbox className="w-10 h-10 text-slate-400 dark:text-slate-500" />
             </div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-2">No expenses yet</h3>
-            <p className="text-slate-600">Start tracking by adding your first expense</p>
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">No expenses yet</h3>
+            <p className="text-slate-600 dark:text-slate-400">Start tracking by adding your first expense</p>
         </motion.div>
     )
 }
@@ -99,26 +99,29 @@ export default function ExpenseList({ category, sortOrder }) {
                         transition={{ delay: index * 0.05 }}
                         layout
                     >
-                        <Card className="shadow-sm border-slate-200 hover:shadow-md transition-shadow cursor-pointer group">
+                        <Card className="shadow-sm border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm hover:shadow-md transition-all duration-200 cursor-pointer group hover:scale-[1.01]">
                             <CardContent className="p-6">
                                 <div className="flex items-center gap-4">
                                     {/* Category Icon */}
-                                    <div className={`w-12 h-12 bg-gradient-to-br ${CATEGORY_COLORS[expense.category]} rounded-xl flex items-center justify-center text-2xl shadow-sm group-hover:scale-110 transition-transform`}>
-                                        {CATEGORY_ICONS[expense.category]}
+                                    <div className={`w-12 h-12 bg-gradient-to-br ${CATEGORY_COLORS[expense.category]} rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform`}>
+                                        {(() => {
+                                            const IconComponent = CATEGORY_ICONS[expense.category]
+                                            return <IconComponent className="w-6 h-6 text-white" />
+                                        })()}
                                     </div>
 
                                     {/* Expense Details */}
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 mb-1">
-                                            <span className="font-semibold text-slate-900">
+                                            <span className="font-semibold text-slate-900 dark:text-white">
                                                 {expense.category}
                                             </span>
-                                            <span className="text-xs text-slate-500">
+                                            <span className="text-xs text-slate-500 dark:text-slate-400">
                                                 {format(new Date(expense.date), 'MMM dd, yyyy')}
                                             </span>
                                         </div>
                                         {expense.description && (
-                                            <p className="text-sm text-slate-600 truncate">
+                                            <p className="text-sm text-slate-600 dark:text-slate-400 truncate">
                                                 {expense.description}
                                             </p>
                                         )}
@@ -126,7 +129,7 @@ export default function ExpenseList({ category, sortOrder }) {
 
                                     {/* Amount */}
                                     <div className="text-right">
-                                        <div className="text-xl font-bold text-slate-900">
+                                        <div className="text-xl font-bold text-slate-900 dark:text-white">
                                             {formatCurrency(expense.amount)}
                                         </div>
                                     </div>
