@@ -11,13 +11,13 @@ const COLORS = {
     Other: '#6b7280'
 }
 
-export default function CategoryChart({ data }) {
+export default function CategoryChart({ data, summary }) {
     if (!data || data.length === 0) {
         return (
-            <Card>
+            <Card className="bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm border-slate-200 dark:border-slate-800">
                 <CardHeader>
-                    <CardTitle>Expenses by Category</CardTitle>
-                    <CardDescription>No data available</CardDescription>
+                    <CardTitle className="text-slate-900 dark:text-white">Expenses by Category</CardTitle>
+                    <CardDescription className="text-slate-600 dark:text-slate-400">No data available</CardDescription>
                 </CardHeader>
             </Card>
         )
@@ -54,10 +54,12 @@ export default function CategoryChart({ data }) {
     }
 
     return (
-        <Card>
+        <Card className="bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm border-slate-200 dark:border-slate-800">
             <CardHeader>
-                <CardTitle>Expenses by Category</CardTitle>
-                <CardDescription>Distribution of your spending</CardDescription>
+                <CardTitle className="text-slate-900 dark:text-white">Expenses by Category</CardTitle>
+                <CardDescription className="text-slate-600 dark:text-slate-400">
+                    Distribution of all your expenses ({summary?.totalCount || 0} total)
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
